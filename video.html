@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video - Spectre Hub</title>
+      <!-- Favicon for different sizes -->
+  <link rel="stylesheet" href="styles/cosmic-search.css">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon/15px.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon/32px.png">
+  <link rel="icon" type="image/png" sizes="64x64" href="favicon/64.png">
+  
+  <!-- Apple Touch Icon -->
+  <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
+  
+  <!-- Microsoft Windows Tiles -->
+  <meta name="msapplication-TileImage" content="favicon/256.png">
+  
+  <!-- Favicon for modern browsers -->
+  <link rel="shortcut icon" href="favicon/256.png">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .video-actions {
+            display: flex;
+            justify-content: center; /* Center the buttons */
+            align-items: center;
+            gap: 20px; /* Space between buttons */
+            margin-top: 20px;
+        }
+
+        .action-btn {
+            background-color: #3498db; /* Blue background */
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease; /* Smooth transition */
+        }
+
+        .action-btn:hover {
+            transform: translateY(-3px); /* Slightly lift on hover */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add shadow on hover */
+        }
+
+        .action-btn .icon {
+            font-size: 1.2em; /* Increase icon size */
+        }
+
+        .like-btn {
+            background-color: #2ecc71; /* Green for like */
+        }
+
+        .dislike-btn {
+            background-color: #e74c3c; /* Red for dislike */
+        }
+
+        .download-btn {
+            background-color: #9b59b6; /* Purple for download */
+        }
+
+        .share-btn {
+            background-color: #f39c12; /* Orange for share */
+        }
+
+        /* Animation for counts */
+        .count {
+            transition: transform 0.3s ease;
+            display: inline-block; /* Ensure transform works correctly */
+        }
+
+        .count.animate {
+            transform: scale(1.2); /* Briefly scale up */
+        }
+
+        /* Comment Section Styles */
+        .comment-section {
+            margin-top: 30px;
+        }
+
+        .comment-section h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .comment-input {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .comment-input img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+
+        .comment-input textarea {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            resize: none;
+            font-size: 14px;
+        }
+
+        .comment-input button {
+            background: #606060;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .sort-comments {
+            margin-bottom: 20px;
+        }
+
+        .sort-comments select {
+            padding: 5px;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .comment {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .comment img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+
+        .comment-content {
+            flex: 1;
+        }
+
+        .comment-content .username {
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .comment-content .text {
+            font-size: 14px;
+            color: #606060;
+        }
+
+        .comment-content .timestamp {
+            font-size: 12px;
+            color: #999;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <h1 class="logo"><a href="index.html" class="animated-logo">Spectre Hub</a></h1>
+            <div class="search-container">
+                <input type="text" id="search-bar" placeholder="Search videos...">
+            </div>
+            <button id="theme-toggle">🌙</button>
+        </div>
+    </header>
+
+    <section class="video-page container">
+        <div class="video-page-layout">
+            <div class="video-main">
+                <div class="player-wrapper">
+                    <iframe id="video-player" src="https://www.youtube.com/embed/example" frameborder="0" allowfullscreen></iframe>
+                </div>
+                <h2 id="video-title"></h2>
+                <div class="video-meta">
+                    <span id="video-views"></span> • <span id="video-date"></span>
+                </div>
+                <div class="video-actions">
+                    <button class="action-btn like-btn" id="like-btn">
+                        <span class="icon">👍</span>
+                        <span class="count" id="like-count">0</span>
+                    </button>
+                    <button class="action-btn dislike-btn" id="dislike-btn">
+                        <span class="icon">👎</span>
+                        <span class="count" id="dislike-count">0</span>
+                    </button>
+                    <button class="action-btn download-btn" id="download-btn" onclick="downloadVideo()">
+                        <span class="icon">⬇️</span>
+                        <span>Download</span>
+                    </button>
+                    <button class="action-btn share-btn" id="share-btn" onclick="shareVideo()">
+                        <span class="icon">🔗</span>
+                        <span>Share</span>
+                    </button>
+                </div>
+                <div class="video-info">
+                    <p>Uploaded by <span id="video-uploader"></span></p>
+                    <p id="video-description"></p>
+                </div>
+
+                <!-- Comment Section -->
+                <div class="comment-section">
+                    <h3>Comments</h3>
+                    <div class="comment-input">
+                        <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="User">
+                        <textarea id="new-comment" placeholder="Add a comment..."></textarea>
+                        <button onclick="postComment()">Post</button>
+                    </div>
+                    <div class="sort-comments">
+                        <select id="sort-comments" onchange="sortComments()">
+                            <option value="top">Top comments</option>
+                            <option value="newest">Newest first</option>
+                        </select>
+                    </div>
+                    <div id="comments-list">
+                        <!-- Comments will be dynamically added here -->
+                    </div>
+                </div>
+            </div>
+            <div class="related-videos">
+                <h3>Related Videos</h3>
+                <div class="related-video-grid" id="related-video-grid">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="script.js"></script>
+    <script>
+        loadVideoPage();
+
+        // Example animation for like/dislike counts
+        function animateCount(element) {
+            element.classList.add('animate');
+            setTimeout(() => {
+                element.classList.remove('animate');
+            }, 300);
+        }
+
+        document.getElementById('like-btn').addEventListener('click', () => {
+            const likeCount = document.getElementById('like-count');
+            likeCount.textContent = parseInt(likeCount.textContent) + 1;
+            animateCount(likeCount);
+        });
+
+        document.getElementById('dislike-btn').addEventListener('click', () => {
+            const dislikeCount = document.getElementById('dislike-count');
+            dislikeCount.textContent = parseInt(dislikeCount.textContent) + 1;
+            animateCount(dislikeCount);
+        });
+
+        // Share popup functionality with acrylic blur, theme support, and custom icons
+        function shareVideo() {
+            const isDarkMode = document.body.classList.contains('dark') || 
+                             (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+
+            const popup = document.createElement('div');
+            popup.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: ${isDarkMode ? 'rgba(40, 40, 40, 0.9)' : 'rgba(255, 255, 255, 0.9)'};
+                backdrop-filter: blur(0.9px);
+                padding: 20px;
+                border-radius: 8px;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+                z-index: 1000;
+                width: 400px;
+                font-family: Arial, sans-serif;
+                color: ${isDarkMode ? '#ffffff' : '#000000'};
+            `;
+
+            const videoUrl = window.location.href;
+
+            popup.innerHTML = `
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                    <h3 style="margin: 0; font-size: 16px; font-weight: bold; color: ${isDarkMode ? '#ffffff' : '#000000'};">Share</h3>
+                    <button onclick="this.parentElement.parentElement.parentElement.removeChild(this.parentElement.parentElement); document.body.removeChild(document.querySelector('.share-overlay'));" 
+                            style="background: none; border: none; font-size: 20px; cursor: pointer; color: ${isDarkMode ? '#ffffff' : '#606060'};">×</button>
+                </div>
+                <div style="display: flex; gap: 10px; overflow-x: auto; padding: 10px 0; margin-bottom: 15px;">
+                    <button onclick="window.open('https://api.whatsapp.com/send?text=${encodeURIComponent(videoUrl)}', '_blank')" 
+                            style="border: none; background: none; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 5px;">
+                        <img src="https://cdn-icons-png.flaticon.com/512/15713/15713434.png" alt="WhatsApp" style="width: 40px; height: 40px; border-radius: 50%;">
+                        <span style="font-size: 12px; color: ${isDarkMode ? '#cccccc' : '#606060'};">WhatsApp</span>
+                    </button>
+                    <button onclick="window.open('https://twitter.com/intent/tweet?url=${encodeURIComponent(videoUrl)}', '_blank')" 
+                            style="border: none; background: none; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 5px;">
+                        <img src="https://cdn-icons-png.flaticon.com/512/5968/5968830.png" alt="X" style="width: 40px; height: 40px; border-radius: 50%;">
+                        <span style="font-size: 12px; color: ${isDarkMode ? '#cccccc' : '#606060'};">X</span>
+                    </button>
+                    <button onclick="window.open('https://www.tumblr.com/widgets/share/tool?canonicalUrl=${encodeURIComponent(videoUrl)}', '_blank')" 
+                            style="border: none; background: none; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 5px;">
+                        <img src="https://cdn-icons-png.flaticon.com/512/3536/3536651.png" alt="Tumblr" style="width: 40px; height: 40px; border-radius: 50%;">
+                        <span style="font-size: 12px; color: ${isDarkMode ? '#cccccc' : '#606060'};">Tumblr</span>
+                    </button>
+                    <button onclick="window.open('https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(videoUrl)}', '_blank')" 
+                            style="border: none; background: none; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 5px;">
+                        <img src="https://cdn-icons-png.flaticon.com/512/5968/5968764.png" alt="Facebook" style="width: 40px; height: 40px; border-radius: 50%;">
+                        <span style="font-size: 12px; color: ${isDarkMode ? '#cccccc' : '#606060'};">Facebook</span>
+                    </button>
+                    <button onclick="window.open('mailto:?body=${encodeURIComponent(videoUrl)}', '_blank')" 
+                            style="border: none; background: none; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 5px;">
+                        <img src="https://cdn-icons-png.flaticon.com/512/5968/5968534.png" alt="Email" style="width: 40px; height: 40px; border-radius: 50%;">
+                        <span style="font-size: 12px; color: ${isDarkMode ? '#cccccc' : '#606060'};">Email</span>
+                    </button>
+                    <button onclick="window.open('https://www.reddit.com/submit?url=${encodeURIComponent(videoUrl)}', '_blank')" 
+                            style="border: none; background: none; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 5px;">
+                        <img src="https://cdn-icons-png.flaticon.com/512/2504/2504934.png" alt="Reddit" style="width: 40px; height: 40px; border-radius: 50%;">
+                        <span style="font-size: 12px; color: ${isDarkMode ? '#cccccc' : '#606060'};">Reddit</span>
+                    </button>
+                    <button onclick="window.open('https://pinterest.com/pin/create/button/?url=${encodeURIComponent(videoUrl)}', '_blank')" 
+                            style="border: none; background: none; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 5px;">
+                        <img src="https://cdn-icons-png.flaticon.com/512/2504/2504923.png" alt="Pinterest" style="width: 40px; height: 40px; border-radius: 50%;">
+                        <span style="font-size: 12px; color: ${isDarkMode ? '#cccccc' : '#606060'};">Pinterest</span>
+                    </button>
+                    <button onclick="window.open('https://t.me/share/url?url=${encodeURIComponent(videoUrl)}', '_blank')" 
+                            style="border: none; background: none; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 5px;">
+                        <img src="https://cdn-icons-png.flaticon.com/512/2504/2504941.png" alt="Telegram" style="width: 40px; height: 40px; border-radius: 50%;">
+                        <span style="font-size: 12px; color: ${isDarkMode ? '#cccccc' : '#606060'};">Telegram</span>
+                    </button>
+                    <button onclick="window.open('https://www.linkedin.com/shareArticle?url=${encodeURIComponent(videoUrl)}', '_blank')" 
+                            style="border: none; background: none; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 5px;">
+                        <img src="https://cdn-icons-png.flaticon.com/512/3665/3665172.png" alt="LinkedIn" style="width: 40px; height: 40px; border-radius: 50%;">
+                        <span style="font-size: 12px; color: ${isDarkMode ? '#cccccc' : '#606060'};">LinkedIn</span>
+                    </button>
+                </div>
+                <div style="display: flex; gap: 10px; align-items: center;">
+                    <input type="text" value="${videoUrl}" readonly 
+                           style="flex: 1; padding: 8px; border: 1px solid ${isDarkMode ? '#555' : '#ddd'}; border-radius: 4px; font-size: 14px; color: ${isDarkMode ? '#cccccc' : '#606060'}; background: ${isDarkMode ? '#333' : '#fff'};">
+                    <button onclick="navigator.clipboard.writeText('${videoUrl}'); this.textContent='Copied!'" 
+                            style="background: ${isDarkMode ? '#555' : '#606060'}; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; font-size: 14px;">
+                        Copy
+                    </button>
+                </div>
+            `;
+
+            const overlay = document.createElement('div');
+            overlay.className = 'share-overlay';
+            overlay.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.5);
+                z-index: 999;
+            `;
+
+            overlay.onclick = () => {
+                document.body.removeChild(popup);
+                document.body.removeChild(overlay);
+            };
+
+            document.body.appendChild(overlay);
+            document.body.appendChild(popup);
+        }
+
+        // Theme toggle logic
+        document.getElementById('theme-toggle').addEventListener('click', () => {
+            document.body.classList.toggle('dark');
+            const themeToggleBtn = document.getElementById('theme-toggle');
+            themeToggleBtn.textContent = document.body.classList.contains('dark') ? '☀️' : '🌙';
+        });
+
+        // Comment Section Logic
+        const comments = [
+            {
+                username: "Saurabh ktr",
+                icon: "https://i.postimg.cc/jdSC6GbV/PXL-20250111-162442897-PORTRAIT.jpg",
+                text: "This video is amazing! Loved the content and the editing is top-notch! 😍",
+                timestamp: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000), // 2 days ago
+                likes: 15
+            },
+            {
+                username: "रणविजय सिंह",
+                icon: "https://i.postimg.cc/ZKx2mMBq/IMG-20221130-WA0001.png",
+                text: "Not impressed. The audio quality is terrible, and the video lags a lot. 👎",
+                timestamp: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000), // 1 day ago
+                likes: 3
+            },
+            {
+                username: "Anil Singh",
+                icon: "https://i.postimg.cc/gkyFJ05m/PXL-20250111-162526557-PORTRAIT.jpg",
+                text: "Great job! This is one of the best videos I've seen on this topic. Keep it up! 👍",
+                timestamp: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000), // 3 days ago
+                likes: 20
+            },
+            {
+                username: "Sanjeev",
+                icon: "https://i.postimg.cc/Hx3dVkjr/original-1267f7dc-a729-4005-8526-4478a3c5f092-PXL-20231215-194459723.jpg",
+                text: "The content is okay, but the pacing is too slow. Needs more energy.",
+                timestamp: new Date(Date.now() - 12 * 60 * 60 * 1000), // 12 hours ago
+                likes: 5
+            },
+            {
+                username: "bh__kuldeep__01",
+                icon: "https://i.postimg.cc/nLCPvVds/PXL-20240201-114439444-PORTRAIT.jpg",
+                text: "Absolutely loved this! So informative and entertaining at the same time! 🌟",
+                timestamp: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000), // 5 days ago
+                likes: 25
+            }
+        ];
+
+        function timeSince(date) {
+            const seconds = Math.floor((new Date() - date) / 1000);
+            let interval = seconds / 31536000;
+            if (interval > 1) return Math.floor(interval) + " years ago";
+            interval = seconds / 2592000;
+            if (interval > 1) return Math.floor(interval) + " months ago";
+            interval = seconds / 86400;
+            if (interval > 1) return Math.floor(interval) + " days ago";
+            interval = seconds / 3600;
+            if (interval > 1) return Math.floor(interval) + " hours ago";
+            interval = seconds / 60;
+            if (interval > 1) return Math.floor(interval) + " minutes ago";
+            return Math.floor(seconds) + " seconds ago";
+        }
+
+        function renderComments(commentArray) {
+            const commentsList = document.getElementById('comments-list');
+            commentsList.innerHTML = '';
+            commentArray.forEach(comment => {
+                const commentDiv = document.createElement('div');
+                commentDiv.className = 'comment';
+                commentDiv.innerHTML = `
+                    <img src="${comment.icon}" alt="${comment.username}">
+                    <div class="comment-content">
+                        <div class="username">${comment.username}</div>
+                        <div class="text">${comment.text}</div>
+                        <div class="timestamp">${timeSince(comment.timestamp)}</div>
+                    </div>
+                `;
+                commentsList.appendChild(commentDiv);
+            });
+        }
+
+        function sortComments() {
+            const sortOption = document.getElementById('sort-comments').value;
+            let sortedComments = [...comments];
+            if (sortOption === 'top') {
+                sortedComments.sort((a, b) => b.likes - a.likes);
+            } else {
+                sortedComments.sort((a, b) => b.timestamp - a.timestamp);
+            }
+            renderComments(sortedComments);
+        }
+
+        function postComment() {
+            const commentText = document.getElementById('new-comment').value.trim();
+            if (commentText) {
+                const newComment = {
+                    username: "You" + Math.floor(Math.random() * 1000),
+                    icon: "https://i.postimg.cc/SK3cHmmz/IMG-20250213-014611-2-1.jpg",
+                    text: commentText,
+                    timestamp: new Date(),
+                    likes: 0
+                };
+                comments.push(newComment);
+                document.getElementById('new-comment').value = '';
+                sortComments();
+            }
+        }
+
+        // Initial render of comments
+        sortComments();
+    </script>
+</body>
+</html>
