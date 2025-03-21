@@ -4,32 +4,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Video - Spectre Hub</title>
-      <!-- Favicon for different sizes -->
-  <link rel="stylesheet" href="styles/cosmic-search.css">
-  <link rel="icon" type="image/png" sizes="16x16" href="favicon/15px.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="favicon/32px.png">
-  <link rel="icon" type="image/png" sizes="64x64" href="favicon/64.png">
-  
-  <!-- Apple Touch Icon -->
-  <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
-  
-  <!-- Microsoft Windows Tiles -->
-  <meta name="msapplication-TileImage" content="favicon/256.png">
-  
-  <!-- Favicon for modern browsers -->
-  <link rel="shortcut icon" href="favicon/256.png">
+    <!-- Favicon for different sizes -->
+    <link rel="stylesheet" href="styles/cosmic-search.css">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon/15px.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon/32px.png">
+    <link rel="icon" type="image/png" sizes="64x64" href="favicon/64.png">
+    
+    <!-- Apple Touch Icon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
+    
+    <!-- Microsoft Windows Tiles -->
+    <meta name="msapplication-TileImage" content="favicon/256.png">
+    
+    <!-- Favicon for modern browsers -->
+    <link rel="shortcut icon" href="favicon/256.png">
     <link rel="stylesheet" href="style.css">
     <style>
         .video-actions {
             display: flex;
-            justify-content: center; /* Center the buttons */
+            justify-content: center;
             align-items: center;
-            gap: 20px; /* Space between buttons */
+            gap: 20px;
             margin-top: 20px;
         }
 
         .action-btn {
-            background-color: #3498db; /* Blue background */
+            background-color: #3498db;
             color: white;
             padding: 10px 20px;
             border: none;
@@ -38,152 +38,105 @@
             display: flex;
             align-items: center;
             gap: 5px;
-            transition: transform 0.2s ease, box-shadow 0.2s ease; /* Smooth transition */
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
 
         .action-btn:hover {
-            transform: translateY(-3px); /* Slightly lift on hover */
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add shadow on hover */
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
 
         .action-btn .icon {
-            font-size: 1.2em; /* Increase icon size */
+            font-size: 1.2em;
         }
 
         .like-btn {
-            background-color: #2ecc71; /* Green for like */
+            background-color: #2ecc71;
         }
 
         .dislike-btn {
-            background-color: #e74c3c; /* Red for dislike */
+            background-color: #e74c3c;
         }
 
         .download-btn {
-            background-color: #9b59b6; /* Purple for download */
+            background-color: #9b59b6;
         }
 
         .share-btn {
-            background-color: #f39c12; /* Orange for share */
+            background-color: #f39c12;
         }
 
-        /* Animation for counts */
         .count {
             transition: transform 0.3s ease;
-            display: inline-block; /* Ensure transform works correctly */
+            display: inline-block;
         }
 
         .count.animate {
-            transform: scale(1.2); /* Briefly scale up */
+            transform: scale(1.2);
         }
 
-        /* Comment Section Styles */
+        /* New Comment Section Styles with Animations */
         .comment-section {
             margin-top: 30px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.5s ease forwards;
         }
 
-        .comment-section h3 {
-            font-size: 18px;
-            margin-bottom: 10px;
+        .comment-section h2 {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: #333;
+            transition: color 0.3s ease;
         }
 
-        .comment-input {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
+        .utterances {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
         }
 
-        .comment-input img {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
+        .utterances:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
 
-        .comment-input textarea {
-            flex: 1;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            resize: none;
-            font-size: 14px;
+        /* Dark mode adjustments */
+        body.dark .comment-section h2 {
+            color: #fff;
         }
 
-        .comment-input button {
-            background: #606060;
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 14px;
+        body.dark .utterances {
+            background: rgba(40, 40, 40, 0.9);
         }
 
-        .sort-comments {
-            margin-bottom: 20px;
+        /* Animation keyframes */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
-        .sort-comments select {
-            padding: 5px;
-            border-radius: 4px;
-            font-size: 14px;
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
         }
 
-        .comment {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-
-        .comment img {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-        }
-
-        .comment-content {
-            flex: 1;
-        }
-
-        .comment-content .username {
-            font-weight: bold;
-            font-size: 14px;
-            margin-bottom: 5px;
-        }
-
-        .comment-content .text {
-            font-size: 14px;
-            color: #606060;
-        }
-
-        .comment-content .timestamp {
-            font-size: 12px;
-            color: #999;
-            margin-top: 5px;
+        .utterances-loading {
+            animation: pulse 1.5s infinite ease-in-out;
         }
     </style>
 </head>
 <body>
-     <p>This is the content of my webpage. Below, you'll find the comment sections.</p>
-
-    <h2>Cusdis Comments</h2>
-    <div id="cusdis_thread"
-         data-host="https://cusdis.com"
-         data-app-id="638ff525-0c4e-4568-b7a1-d235279f30a2"
-         data-page-id="my-unique-page-id"
-         data-page-url="https://www.example.com/my-page"
-         data-page-title="My Page Title">
-    </div>
-    <script async defer src="https://cusdis.com/js/cusdis.es.js"></script>
-
-    <h2>Utterances Comments</h2>
-    <script src="https://utteranc.es/client.js"
-            repo="Preetam8873/Spectre-hub"
-            issue-term="pathname"
-            theme="dark-blue"
-            crossorigin="anonymous"
-            async>
-    </script>
-
-    <p>More content of my page...<
     <header>
         <div class="header-content">
             <h1 class="logo"><a href="index.html" class="animated-logo">Spectre Hub</a></h1>
@@ -227,22 +180,17 @@
                     <p id="video-description"></p>
                 </div>
 
-                <!-- Comment Section -->
+                <!-- Updated Comment Section with Utterances -->
                 <div class="comment-section">
-                    <h3>Comments</h3>
-                    <div class="comment-input">
-                        <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="User">
-                        <textarea id="new-comment" placeholder="Add a comment..."></textarea>
-                        <button onclick="postComment()">Post</button>
-                    </div>
-                    <div class="sort-comments">
-                        <select id="sort-comments" onchange="sortComments()">
-                            <option value="top">Top comments</option>
-                            <option value="newest">Newest first</option>
-                        </select>
-                    </div>
-                    <div id="comments-list">
-                        <!-- Comments will be dynamically added here -->
+                    <h2>Comments</h2>
+                    <div class="utterances">
+                        <script src="https://utteranc.es/client.js"
+                            repo="Preetam8873/Spectre-hub"
+                            issue-term="pathname"
+                            theme="dark-blue"
+                            crossorigin="anonymous"
+                            async>
+                        </script>
                     </div>
                 </div>
             </div>
@@ -258,7 +206,6 @@
     <script>
         loadVideoPage();
 
-        // Example animation for like/dislike counts
         function animateCount(element) {
             element.classList.add('animate');
             setTimeout(() => {
@@ -278,7 +225,6 @@
             animateCount(dislikeCount);
         });
 
-        // Share popup functionality with acrylic blur, theme support, and custom icons
         function shareVideo() {
             const isDarkMode = document.body.classList.contains('dark') || 
                              (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
@@ -386,114 +332,23 @@
             document.body.appendChild(popup);
         }
 
-        // Theme toggle logic
         document.getElementById('theme-toggle').addEventListener('click', () => {
             document.body.classList.toggle('dark');
             const themeToggleBtn = document.getElementById('theme-toggle');
             themeToggleBtn.textContent = document.body.classList.contains('dark') ? '☀️' : '🌙';
         });
 
-        // Comment Section Logic
-        const comments = [
-            {
-                username: "Saurabh ktr",
-                icon: "https://i.postimg.cc/jdSC6GbV/PXL-20250111-162442897-PORTRAIT.jpg",
-                text: "This video is amazing! Loved the content and the editing is top-notch! 😍",
-                timestamp: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000), // 2 days ago
-                likes: 15
-            },
-            {
-                username: "रणविजय सिंह",
-                icon: "https://i.postimg.cc/ZKx2mMBq/IMG-20221130-WA0001.png",
-                text: "Not impressed. The audio quality is terrible, and the video lags a lot. 👎",
-                timestamp: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000), // 1 day ago
-                likes: 3
-            },
-            {
-                username: "Anil Singh",
-                icon: "https://i.postimg.cc/gkyFJ05m/PXL-20250111-162526557-PORTRAIT.jpg",
-                text: "Great job! This is one of the best videos I've seen on this topic. Keep it up! 👍",
-                timestamp: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000), // 3 days ago
-                likes: 20
-            },
-            {
-                username: "Sanjeev",
-                icon: "https://i.postimg.cc/Hx3dVkjr/original-1267f7dc-a729-4005-8526-4478a3c5f092-PXL-20231215-194459723.jpg",
-                text: "The content is okay, but the pacing is too slow. Needs more energy.",
-                timestamp: new Date(Date.now() - 12 * 60 * 60 * 1000), // 12 hours ago
-                likes: 5
-            },
-            {
-                username: "bh__kuldeep__01",
-                icon: "https://i.postimg.cc/nLCPvVds/PXL-20240201-114439444-PORTRAIT.jpg",
-                text: "Absolutely loved this! So informative and entertaining at the same time! 🌟",
-                timestamp: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000), // 5 days ago
-                likes: 25
-            }
-        ];
-
-        function timeSince(date) {
-            const seconds = Math.floor((new Date() - date) / 1000);
-            let interval = seconds / 31536000;
-            if (interval > 1) return Math.floor(interval) + " years ago";
-            interval = seconds / 2592000;
-            if (interval > 1) return Math.floor(interval) + " months ago";
-            interval = seconds / 86400;
-            if (interval > 1) return Math.floor(interval) + " days ago";
-            interval = seconds / 3600;
-            if (interval > 1) return Math.floor(interval) + " hours ago";
-            interval = seconds / 60;
-            if (interval > 1) return Math.floor(interval) + " minutes ago";
-            return Math.floor(seconds) + " seconds ago";
-        }
-
-        function renderComments(commentArray) {
-            const commentsList = document.getElementById('comments-list');
-            commentsList.innerHTML = '';
-            commentArray.forEach(comment => {
-                const commentDiv = document.createElement('div');
-                commentDiv.className = 'comment';
-                commentDiv.innerHTML = `
-                    <img src="${comment.icon}" alt="${comment.username}">
-                    <div class="comment-content">
-                        <div class="username">${comment.username}</div>
-                        <div class="text">${comment.text}</div>
-                        <div class="timestamp">${timeSince(comment.timestamp)}</div>
-                    </div>
-                `;
-                commentsList.appendChild(commentDiv);
-            });
-        }
-
-        function sortComments() {
-            const sortOption = document.getElementById('sort-comments').value;
-            let sortedComments = [...comments];
-            if (sortOption === 'top') {
-                sortedComments.sort((a, b) => b.likes - a.likes);
-            } else {
-                sortedComments.sort((a, b) => b.timestamp - a.timestamp);
-            }
-            renderComments(sortedComments);
-        }
-
-        function postComment() {
-            const commentText = document.getElementById('new-comment').value.trim();
-            if (commentText) {
-                const newComment = {
-                    username: "You" + Math.floor(Math.random() * 1000),
-                    icon: "https://i.postimg.cc/SK3cHmmz/IMG-20250213-014611-2-1.jpg",
-                    text: commentText,
-                    timestamp: new Date(),
-                    likes: 0
-                };
-                comments.push(newComment);
-                document.getElementById('new-comment').value = '';
-                sortComments();
-            }
-        }
-
-        // Initial render of comments
-        sortComments();
+        // Add loading animation for Utterances
+        document.addEventListener('DOMContentLoaded', () => {
+            const utterancesDiv = document.querySelector('.utterances');
+            utterancesDiv.classList.add('utterances-loading');
+            
+            // Remove loading animation when Utterances is loaded
+            const script = document.querySelector('.utterances script');
+            script.onload = () => {
+                utterancesDiv.classList.remove('utterances-loading');
+            };
+        });
     </script>
 </body>
 </html>
